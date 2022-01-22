@@ -1,5 +1,5 @@
 import { setLocalStorageItem, getLocalStorageItem } from "@raycast/api";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { Refreshable, Storable } from "./types";
 
 function persistedStorage<T>({

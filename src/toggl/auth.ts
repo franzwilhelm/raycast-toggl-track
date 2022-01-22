@@ -20,7 +20,7 @@ export const authenticatedFetch = (token: string, baseUrl: string) => ({
     }
     return (await response.json()) as T;
   },
-  post: async <T>(endpoint: string, body: any): Promise<T> => {
+  post: async <T>(endpoint: string, body: unknown): Promise<T> => {
     const response = await fetch(baseUrl + endpoint, {
       method: "POST",
       headers: {
@@ -34,7 +34,7 @@ export const authenticatedFetch = (token: string, baseUrl: string) => ({
     }
     return (await response.json()) as T;
   },
-  put: async <T>(endpoint: string, body: any): Promise<T> => {
+  put: async <T>(endpoint: string, body: unknown): Promise<T> => {
     const response = await fetch(baseUrl + endpoint, {
       method: "PUT",
       headers: {
