@@ -12,6 +12,7 @@ export type TogglStorage = {
   clients: Refreshable<Client[]>;
   tags: Refreshable<Tag[]>;
   runningTimeEntry: Refreshable<TimeEntry | null>;
+  timeEntries: Refreshable<TimeEntry[]>;
 };
 
 export type Storable<T> = {

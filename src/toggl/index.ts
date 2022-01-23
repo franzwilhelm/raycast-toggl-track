@@ -10,14 +10,39 @@ const TogglAPI = function (apiToken: string) {
     getWorkspaces: (): Promise<Workspace[]> => {
       return api.get<Workspace[]>("/workspaces");
     },
-    getWorkspaceProjects: (workspaceId: number): Promise<Project[] | null> => {
-      return api.get<Project[] | null>(`/workspaces/${workspaceId}/projects`);
+    getWorkspaceProjects: async (workspaceId: number): Promise<Project[] | null> => {
+      const projects = (await api.get<Project[] | null>(`/workspaces/${workspaceId}/projects`)) || [];
+      projects.push({
+        id: -1,
+        wid: workspaceId,
+        cid: -1,
+        name: "No project",
+        billable: false,
+        is_private: false,
+        active: true,
+        template: false,
+        at: new Date(),
+        created_at: new Date(),
+        color: "",
+        auto_estimates: false,
+        actual_hours: 0,
+        hex_color: "",
+      });
+      return projects;
     },
-    createTimeEntry: ({ projectId, description, tags }: { projectId: number; description: string; tags: string[] }) => {
+    createTimeEntry: ({
+      projectId,
+      description,
+      tags,
+    }: {
+      projectId?: number;
+      description: string;
+      tags: string[];
+    }) => {
       return api.post<{ data: TimeEntry }>(`/time_entries/start`, {
         time_entry: {
           description,
-          pid: projectId,
+          pid: projectId !== -1 ? projectId : undefined,
           tags,
           created_with: "raycast-toggl-track",
         },
@@ -35,6 +60,11 @@ const TogglAPI = function (apiToken: string) {
     },
     stopTimeEntry: ({ id }: { id: number }) => {
       return api.put<{ data: TimeEntry }>(`/time_entries/${id}/stop`, {});
+    },
+    getTimeEntries: ({ startDate, endDate }: { startDate: Date; endDate: Date }) => {
+      return api.get<TimeEntry[]>(
+        `/time_entries?start_date=${startDate.toISOString()}&end_date=${endDate.toISOString()}`
+      );
     },
   };
 };

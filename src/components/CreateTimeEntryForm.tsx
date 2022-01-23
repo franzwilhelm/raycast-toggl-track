@@ -5,15 +5,15 @@ import { Project } from "../toggl/types";
 import { useAppContext } from "../context";
 import { useMemo, useState } from "react";
 
-function CreateTimeEntryForm({ project }: { project: Project }) {
+function CreateTimeEntryForm({ project }: { project?: Project }) {
   const { pop } = useNavigation();
   const { projects, tags, isLoading, projectGroups } = useAppContext();
-  const [selectedProject, setSelectedProject] = useState<Project>(project);
+  const [selectedProject, setSelectedProject] = useState<Project | undefined>(project);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   async function handleSubmit(values: { title: string }) {
     await toggl.createTimeEntry({
-      projectId: selectedProject.id,
+      projectId: selectedProject?.id,
       description: values.title,
       tags: selectedTags,
     });
@@ -24,7 +24,7 @@ function CreateTimeEntryForm({ project }: { project: Project }) {
   }
 
   const projectTags = useMemo(() => {
-    return tags.filter((tag) => tag.wid === selectedProject.wid);
+    return tags.filter((tag) => tag.wid === selectedProject?.wid);
   }, [tags, selectedProject]);
 
   const onProjectChange = (projectId: string) => {
@@ -51,7 +51,7 @@ function CreateTimeEntryForm({ project }: { project: Project }) {
       <Form.Dropdown
         id="project"
         title="Project"
-        defaultValue={selectedProject.id.toString()}
+        defaultValue={selectedProject?.id.toString()}
         onChange={onProjectChange}
       >
         {projectGroups.map((group) => (

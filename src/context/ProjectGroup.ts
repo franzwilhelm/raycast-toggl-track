@@ -28,5 +28,6 @@ export function generateProjectGroups(projects: Project[], workspaces: Workspace
     acc[key].projects.push(p);
     return acc;
   }, {} as { [key: string]: ProjectGroup });
+
   return Object.values(projectGroups).sort((a, b) => a.key.localeCompare(b.key));
 }

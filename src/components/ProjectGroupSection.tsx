@@ -1,29 +1,6 @@
-import { List, Icon, ActionPanel, PushAction } from "@raycast/api";
-import { Project } from "../toggl/types";
-import CreateTimeEntryForm from "./CreateTimeEntryForm";
-import { AppContextProvider } from "../context";
+import { List } from "@raycast/api";
 import { ProjectGroup } from "../context/ProjectGroup";
-
-function ProjectListItem({ project }: { project: Project }) {
-  return (
-    <List.Item
-      icon={{ source: Icon.Circle, tintColor: project.hex_color }}
-      title={project.name}
-      actions={
-        <ActionPanel>
-          <PushAction
-            title="Create time entry"
-            target={
-              <AppContextProvider>
-                <CreateTimeEntryForm project={project} />
-              </AppContextProvider>
-            }
-          />
-        </ActionPanel>
-      }
-    />
-  );
-}
+import ProjectListItem from "./ProjectListItem";
 
 export default function ProjectGroupSection({ group }: { group: ProjectGroup }) {
   return (

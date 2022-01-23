@@ -44,7 +44,7 @@ function persistedStorage<T>({
       if (rawItem) {
         const { lastRefresh, data } = JSON.parse(rawItem) as Storable<T>;
 
-        if (dayjs().diff(lastRefresh, "second") < expirySeconds) {
+        if (lastRefresh && dayjs().diff(lastRefresh, "second") < expirySeconds) {
           return Promise.resolve(data);
         }
       }
